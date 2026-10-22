@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { TopRight, Connection, Lock, DataAnalysis } from '@element-plus/icons-vue'
+import PageHeading from '../components/PageHeading.vue'
+import { provenance } from '../data/experiments'
+const stack = [ { name: 'Vue 3 + TypeScript', text: 'Composition API · 严格类型' }, { name: 'Vite + Pinia + Router', text: '构建 · 状态 · 路由' }, { name: 'Element Plus + Tailwind', text: '交互基础与视觉样式' }, { name: 'ECharts + Vue Flow', text: '实验图表与架构观察' }, { name: 'Python + LangGraph', text: '已有受控 Agent 工作流' }, { name: 'SQLite + SQLGlot', text: '只读数据与确定性 SQL 校验' } ]
+</script>
+<template>
+  <PageHeading eyebrow="ABOUT THE PROJECT" title="不止生成 SQL，更要验证每一步。" description="一个围绕实验公平、安全执行和可恢复审计构建的 Text-to-SQL 工程项目。"><a class="primary-link" href="https://github.com/pcwl22/Text-to-SQL-Agent" target="_blank" rel="noopener noreferrer">GitHub 源码<ElIcon><TopRight /></ElIcon></a></PageHeading>
+  <section class="panel about-hero"><div class="hero-orbit" aria-hidden="true"><span>&gt;_</span><i></i><i></i></div><div><span class="eyebrow">FROM NATURAL LANGUAGE TO VERIFIED SQL</span><h2>让 Agent 的行为，<br>成为可以检查的工程事实。</h2><p>自然语言到 SQL 面临 Schema 选择、结构错误、危险语句、语义偏差和评测泄漏。项目通过受控 Graph、确定性工具与独立评测，区分“能执行”与“答案正确”。</p><div class="tag-row"><span>真实 SQLite</span><span>固定 33 题 / 11 库</span><span>可追溯研究</span></div></div></section>
+  <div class="section-heading"><h2>技术栈与职责</h2><span class="small-label">CLEAR BOUNDARIES</span></div><section class="stack-grid"><article v-for="(s, i) in stack" :key="s.name" class="panel"><span class="mono small-label">{{ String(i + 1).padStart(2, '0') }}</span><h3>{{ s.name }}</h3><p>{{ s.text }}</p></article></section>
+  <div class="about-columns"><section class="panel"><h2>已验证的成果</h2><ul class="feature-list"><li><ElIcon><DataAnalysis /></ElIcon><div><b>真实 A/B 对比</b><p>A 官方 EX 19/33，B 18/33；公开成本与限制。</p></div></li><li><ElIcon><Connection /></ElIcon><div><b>独立 Repair 诊断</b><p>8/8 预设语义断言通过，不属于 BIRD 官方 EX。</p></div></li><li><ElIcon><Lock /></ElIcon><div><b>审计与安全闭环</b><p>请求前 fsync、零重试、只读执行、Gold 隔离。</p></div></li></ul></section><section class="panel"><h2>当前边界</h2><ul class="limitation-list"><li>尚未实现前端 Live Inference 或后端 Web API。</li><li>C / D 未完成真实评测，自然 Repair 收益未知。</li><li>真实 MCP Client 尚未集成；Graph 直接调用 Python 工具。</li><li>33 题为开发子集，无完整 500 题成绩或显著性结论。</li><li>Playground 为明确标记的 DEMO，无浏览器 SQL 执行。</li><li>费用缺少可靠账单依据，保持 UNKNOWN。</li></ul></section></div>
+  <section class="panel provenance-panel"><h2>公开证据与来源</h2><p>聚合指标来自已发布、已核验报告；当前 Web 页面不接触原始请求日志、Gold SQL 或 SQLite 文件。</p><a :href="provenance.url" target="_blank" rel="noopener noreferrer" class="text-link">{{ provenance.source }} ↗</a><code>Source commit · {{ provenance.commit }}</code><code>Manifest SHA256 · {{ provenance.manifestSha256 }}</code></section>
+</template>

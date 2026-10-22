@@ -1,5 +1,19 @@
 # 可审计的 Text-to-SQL Agent
 
+## Vue 3 离线展示台（独立前端）
+
+新增 `frontend/`：深浅主题、实验总览、SQL DEMO 回放、Vue Flow 工作流、A/B 逐题对比、安全审计与项目介绍六页。前端不调用模型、不执行 SQL、不加载生产密钥或原始日志；C/D 仍未真实运行。
+
+```powershell
+Set-Location frontend
+npm install
+npm run dev
+# http://127.0.0.1:5173
+# 验证：npm run build / npm run type-check / npm run lint / npm run test
+```
+
+Node.js 24.11.0 / npm 11.6.1；首次安装依赖需访问 npm registry。详见 [前端手册](frontend/README.md)、[设计](docs/FRONTEND_DESIGN.md) 和 [实际验收](docs/FRONTEND_STATUS.md)。Python CLI 与安全执行逻辑保持原样。
+
 使用 Python、LangGraph 和真实 SQLite，把自然语言问题、Evidence、Schema 转成受安全校验的 SQL，并独立评测结果。项目重点是可比较的实验、只读执行、Gold 隔离、模型请求预算及崩溃审计。
 
 这是已有 Python 项目的增量实现，当前是本地 CLI 与实验平台。已完成真实 Baseline、Schema-only A/B 和独立 Repair 诊断；**正式 C/D 尚未运行，没有完整 500 题成绩，也没有证明自然 Repair 提升官方 EX**。

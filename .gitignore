@@ -98,3 +98,14 @@ Desktop.ini
 !/docs/THIRD_PARTY_NOTICES.md
 !/docs/RELEASE_READINESS.md
 !/docs/phase3c_live_commands.ps1
+
+# Vue dashboard sources are public; local dependencies and builds remain local.
+node_modules/
+coverage/
+output/playwright/
+.playwright-cli/
+/frontend/output/
+!/docs/FRONTEND_DESIGN.md
+!/docs/FRONTEND_STATUS.md
+!/frontend/src/data/
+!/frontend/src/data/**
