@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/bird-bench/mini_dev",
+  "commit": "abd11b6db92a1c9f809b32f7564c7c71b34d67f0",
+  "source_cache": "outputs/official_ex_source/abd11b6db92a1c9f809b32f7564c7c71b34d67f0",
+  "files": {
+    "evaluation_ex.py": {"path": "evaluation/evaluation_ex.py", "git_blob_sha1": "45cc3bb8cb6edf039e6a8a2897b7b5f06aa23970", "sha256": "da1bbcd4530be83692d7c650c814ea9704bb710d0c953eb75d02ccb38233cf89"},
+    "evaluation_utils.py": {"path": "evaluation/evaluation_utils.py", "git_blob_sha1": "1c2c9bea73f7c77429848d0c289f4ca19b906e36", "sha256": "f6943d249caac5aeaef9bce21d43dbf29dcef85a0c965a76df032a9542f308bf"}
+  },
+  "scoring_logic_modified": false,
+  "compatibility_layer": "bird_starter/official_ex_windows.py",
+  "sql_dialect": "SQLite",
+  "num_cpus": 1,
+  "start_method": "spawn"
+}

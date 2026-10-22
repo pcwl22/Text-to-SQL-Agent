@@ -1,0 +1,24 @@
+{
+  "suite_version": "phase3b-ablation-v2",
+  "purpose": "future_offline_prepared_ablation_not_executed_model_experiment",
+  "common_configuration_reference": "configs/phase3a/ablation_common_v1.json",
+  "common_configuration_sha256": "49dc30501a91b5a9cdbc8f06f9e983fec4d83e6f97dfce1f65fd0a009afe5e52",
+  "manifest": "configs/phase3a/bird_dev33_v1.json",
+  "manifest_sha256": "7136f72aa9e0b78ccab8b29dfb077247a082e541604b4f8841fede2a63ba6dd8",
+  "api_authorization": "NONE; each real experiment requires new explicit authorization",
+  "max_http_attempts_per_group_proposed": 99,
+  "case_error_policy": "isolate",
+  "request_retries": 0,
+  "sdk_retries": 0,
+  "concurrency": 1,
+  "max_logical_repairs_per_case": 1,
+  "repair_prompt_version": "sql-repair-v1",
+  "groups": {
+    "baseline": {"schema_linking": false, "sql_repair": false},
+    "schema_only": {"schema_linking": true, "sql_repair": false},
+    "repair_only": {"schema_linking": false, "sql_repair": true},
+    "full": {"schema_linking": true, "sql_repair": true}
+  },
+  "configuration_loading": "Checklist only; CLI does not automatically load this file. Pass shared parameters explicitly.",
+  "metrics": "execution recovery is not semantic repair success; local proxy is not official EX"
+}

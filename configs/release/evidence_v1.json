@@ -1,0 +1,52 @@
+{
+  "version": "public-release-evidence-v1",
+  "contains_raw_experiment_records": false,
+  "notice": "Hashes and aggregate metrics only. Original records remain private/local; absence does not imply a passing verification.",
+  "dataset_sha256": "88ceb0710163cae46a256ecea8f0a8c98286599530b60587fda5c3cfe57d45d2",
+  "manifest_sha256": "7136f72aa9e0b78ccab8b29dfb077247a082e541604b4f8841fede2a63ba6dd8",
+  "A": {
+    "run_id": "343c45833caa427c892f7a7887a29daf",
+    "http_attempts": 33,
+    "official_correct": 19,
+    "planned_cases": 33,
+    "tokens": 45773
+  },
+  "B": {
+    "run_id": "0529e0de668a4b3aa6acad2cb6bcb6a2",
+    "http_attempts": 66,
+    "official_correct": 18,
+    "planned_cases": 33,
+    "tokens": 84432
+  },
+  "repair_diagnostic": {
+    "run_id": "40d2955515ef45f7b5bcf573d3d43f42",
+    "http_attempts": 8,
+    "semantic_assertions_passed": 8,
+    "planned_cases": 8,
+    "is_BIRD_EX": false
+  },
+  "C_D_real_runs": "NOT_RUN",
+  "actual_cost": "UNKNOWN",
+  "historical_files": {
+    "outputs/phase3c_live/A_v1/A.jsonl": "3aab961b14dd418030c3aa7b108e944dceda0780c0914302747468e562f04a13",
+    "outputs/phase3c_live/A_v1/A.summary.json": "2031efbd2c46188febbbefa15cf18400f2e7184d3549d7b458a1a4ae7aec5bde",
+    "outputs/phase3c_live/A_v1/A.final_report.json": "639aa59d521b0e70c64469c9d1452da2a3f350dd8e6242e2b7477cfd1b2dcb4b",
+    "outputs/phase3c_live/A_v1/batch.config.json": "55f7abca9174265ed3239a9085957895bfc4ef006d4187a442a224fabb2a42a7",
+    "outputs/phase3c_live/A_v1/batch.attempts.jsonl": "79890a95ca377c09d7a9e725b57ba51378ffb7004d5d19c199d541e8f10e74a3",
+    "outputs/phase3c_live/A_v1/official_ex/summary.json": "bb95e0285e17cf6df8a15ce0000c6a427004c44b3658b0cca465fb9b77590899",
+    "outputs/phase3c_live/B_v1/B.jsonl": "cb4f75dece6e231abe0082131e104e5051166701990cd5cfdd916c1dde63b04a",
+    "outputs/phase3c_live/B_v1/B.summary.json": "2c02c9eba92e04d8f8cd1317279feb0013dd6f72c9a68d53c8907ed7b9f49031",
+    "outputs/phase3c_live/B_v1/B.final_report.json": "2117ec7e5639d1fe5d7bbb2b90658d886afa6eaf07204f86d2986f301d443d51",
+    "outputs/phase3c_live/B_v1/batch.config.json": "0507ec1dc6159d68bde0502b1e8c737bd1666433fb68bde60428dc3cbc17ea26",
+    "outputs/phase3c_live/B_v1/batch.attempts.jsonl": "a5ab62c7406079a609fb25985b9ef488b6dac80d58e1d559d0ec50b3e717ba36",
+    "outputs/phase3c_live/B_v1/official_ex/summary.json": "363c03532738de9cd4077923e08c73d02e1cf2bce4aa0702fc8d5472fe019e9f",
+    "outputs/repair_diagnostic_live/v1/integrity.json": "e57e705fbc0bc8f086fe9c624bf6ff348267a32b174187c79e7f91015404c668",
+    "outputs/repair_diagnostic_live/v1/negative_results.json": "b2ee9279f927e2cf260913aaed99943db00464282fe223f3f85032283d2bf454",
+    "outputs/repair_diagnostic_live/v1/requests.attempts.jsonl": "2837930bca8e015cfbd91d3b1c871973fbb7b3e05a81d014f042ed8799f25987",
+    "outputs/repair_diagnostic_live/v1/requests.config.json": "33a8d2bf0bf0f887cfbbe1c463dd8c67b27395ff583bf453d9f039c43027ee4e",
+    "outputs/repair_diagnostic_live/v1/results.jsonl": "051a70cccb8e93b7927879ea3c5ae019248d9d82655d8d853f9ef7ecc3399f82",
+    "outputs/repair_diagnostic_live/v1/semantic_oracle_results.json": "e3f53bb5f2c0727f3f98d7b0e4d86501aa368757776ef6e562f06b0af2c15b2d",
+    "outputs/repair_diagnostic_live/v1/summary.json": "8467f528497162a903b403977a7e1186e057e45b59798f7ea6e9eaa81d1b469d",
+    "outputs/repair_diagnostic_live_checks/v1/final_acceptance.json": "91cd2d136a1f495d3da123993933eefde055dad942c3c54c09ac671ff660fdfa"
+  }
+}

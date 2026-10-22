@@ -1,0 +1,13 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+# Frozen JSON fingerprints include their original bytes (some are CRLF).
+# Do not normalize their line endings when cloning on another platform.
+*.json -text
+*.toml text eol=lf
+*.ini text eol=lf
+*.txt text eol=lf
+*.ps1 text eol=lf
+.gitignore text eol=lf
+.env.example text eol=lf
+.gitattributes text eol=lf

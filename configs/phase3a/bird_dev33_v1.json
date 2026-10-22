@@ -1,0 +1,182 @@
+{
+  "manifest_version": "bird-dev33-v1",
+  "purpose": "development_schema_evaluation_not_held_out_test",
+  "dataset_sha256": "88ceb0710163cae46a256ecea8f0a8c98286599530b60587fda5c3cfe57d45d2",
+  "source_revision": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301",
+  "selection_rule": "db_id ascending; first case_id in simple/moderate/challenging; fill missing strata by lowest unused case_id",
+  "selection_uses_gold_sql": false,
+  "cases": [
+    {
+      "case_id": 5,
+      "db_id": "california_schools",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 12,
+      "db_id": "california_schools",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 28,
+      "db_id": "california_schools",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 340,
+      "db_id": "card_games",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 344,
+      "db_id": "card_games",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 371,
+      "db_id": "card_games",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 531,
+      "db_id": "codebase_community",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 544,
+      "db_id": "codebase_community",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 586,
+      "db_id": "codebase_community",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 1471,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 1472,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 1476,
+      "db_id": "debit_card_specializing",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 1035,
+      "db_id": "european_football_2",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 1025,
+      "db_id": "european_football_2",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 1028,
+      "db_id": "european_football_2",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 92,
+      "db_id": "financial",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 89,
+      "db_id": "financial",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 94,
+      "db_id": "financial",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 847,
+      "db_id": "formula_1",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 846,
+      "db_id": "formula_1",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 880,
+      "db_id": "formula_1",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 1312,
+      "db_id": "student_club",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 1317,
+      "db_id": "student_club",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 1339,
+      "db_id": "student_club",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 717,
+      "db_id": "superhero",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 719,
+      "db_id": "superhero",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 724,
+      "db_id": "superhero",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 1153,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 1149,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 1168,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging"
+    },
+    {
+      "case_id": 195,
+      "db_id": "toxicology",
+      "difficulty": "simple"
+    },
+    {
+      "case_id": 197,
+      "db_id": "toxicology",
+      "difficulty": "moderate"
+    },
+    {
+      "case_id": 198,
+      "db_id": "toxicology",
+      "difficulty": "challenging"
+    }
+  ],
+  "case_count": 33,
+  "database_count": 11,
+  "difficulty_counts": {
+    "simple": 11,
+    "moderate": 11,
+    "challenging": 11
+  }
+}

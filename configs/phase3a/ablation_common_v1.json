@@ -1,0 +1,62 @@
+{
+  "suite_version": "ablation-common-v1",
+  "dataset_sha256": "88ceb0710163cae46a256ecea8f0a8c98286599530b60587fda5c3cfe57d45d2",
+  "source_revision": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301",
+  "common_configuration": {
+    "model": "deepseek-4.1-flash",
+    "base_url": "https://gw.lunaroute.com/v1",
+    "temperature": 0.0,
+    "request_timeout_seconds": 300.0,
+    "request_retries": 0,
+    "sdk_retries": 0,
+    "n": 1,
+    "max_output_tokens": 2048,
+    "token_parameter": "max_completion_tokens",
+    "concurrency": 1,
+    "evidence": true,
+    "prompt_version": "baseline-v1",
+    "sql_timeout_seconds": 8.0,
+    "max_rows": 1000,
+    "max_prompt_chars": 200000,
+    "http_redirects": false
+  },
+  "baseline_reference_run_id": "eaf5d4877d3c44ba95b4a3846318b72f",
+  "baseline_config_sha256": "3a7693931e9de79be63e0361cfd951bfe89fb0e14fc4a78bc2bd0582a5c38cf9",
+  "smoke_case_ids": [
+    1471,
+    1472,
+    1473,
+    1476,
+    1479,
+    1480,
+    1481,
+    1482,
+    1483,
+    1484
+  ],
+  "development_manifest": "bird_dev33_v1.json",
+  "api_authorization": "NONE; new authorization required for every future experiment",
+  "request_budget_policy": "Explicit per-run cap required; linking adds at most one request per case; never borrow V3 budget",
+  "groups": {
+    "baseline": {
+      "schema_linking": false,
+      "repair": false,
+      "implemented": true
+    },
+    "schema_only": {
+      "schema_linking": true,
+      "repair": false,
+      "implemented": true
+    },
+    "repair_only": {
+      "schema_linking": false,
+      "repair": true,
+      "implemented": false
+    },
+    "full": {
+      "schema_linking": true,
+      "repair": true,
+      "implemented": false
+    }
+  }
+}

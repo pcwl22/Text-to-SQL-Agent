@@ -1,0 +1,4 @@
+# Optional official SQLite evaluation dependencies; separate from Agent runtime.
+func-timeout==4.3.5
+PyMySQL==1.2.3
+psycopg2-binary==2.9.13

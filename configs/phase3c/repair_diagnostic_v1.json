@@ -1,0 +1,286 @@
+{
+  "version": "repair-diagnostic-v1",
+  "purpose": "INDEPENDENT_HAND_AUTHORED_DIAGNOSTIC_NOT_BIRD_EX",
+  "construction": "Human-authored questions and faulty SQL from SQLite metadata only; no BIRD question JSON, Gold SQL or official EX feedback used.",
+  "positive_count": 8,
+  "negative_count": 4,
+  "positive_database_count": 8,
+  "max_http_attempts": 8,
+  "concurrency": 1,
+  "request_retries": 0,
+  "repair_prompt_version": "sql-repair-v1",
+  "common": {
+    "model": "deepseek-4.1-flash",
+    "base_url": "https://gw.lunaroute.com/v1",
+    "temperature": 0.0,
+    "request_timeout_seconds": 300.0,
+    "request_retries": 0,
+    "sdk_retries": 0,
+    "n": 1,
+    "max_output_tokens": 2048,
+    "token_parameter": "max_completion_tokens",
+    "concurrency": 1,
+    "evidence": true,
+    "prompt_version": "baseline-v1",
+    "sql_timeout_seconds": 8.0,
+    "max_rows": 1000,
+    "max_prompt_chars": 200000,
+    "http_redirects": false,
+    "max_repairs": 1,
+    "schema_link_prompt_version": "schema-link-v1",
+    "repair_prompt_version": "sql-repair-v1"
+  },
+  "source_profiles": {
+    "bird_starter/sql_repair.py": "685d867a22e1b6659955b05e16debc7f26f4458edb45882a2a33fbaba540e700",
+    "bird_starter/schema_workflow.py": "19c0dc387f5f66bdc93ccf438de2f9314e59cbe918132bb3f7df9065f76e2d90",
+    "bird_starter/model.py": "776c680dbf1889fad49297431349a5a3b117b16511e52491b4379bfe52011f76",
+    "bird_starter/tools.py": "8c6a5c6b9371e0ee3c9a5e89b4915606c7fcd6deec264f3aa6638b0f2bad0b3a",
+    "configs/phase3c/ablation_v1.json": "b85d3686f2f815c999dc2bdf3715efb99dd30fee66e423a66b743235dc15c815",
+    "configs/phase3a/bird_dev33_v1.json": "7136f72aa9e0b78ccab8b29dfb077247a082e541604b4f8841fede2a63ba6dd8",
+    "bird_starter/repair_diagnostic.py": "57cfa2f82afb1808d2ee5fe924d8dd534c8aa7adf15cec9ade46620cc2fdf8f6",
+    "scripts/run_repair_diagnostic.py": "9d5cac78b33cbf148793accbb2832ca1ae68accc24b30eaa0c65df6123318c49"
+  },
+  "database_sha256": {
+    "california_schools": "c0903eec662e63068fd1d14403d3d6c1d473287fc10c4356333ea58f878db983",
+    "card_games": "c98bdb57fe7474da798b407785544b9af0daaad5d61fd21e2a73309493bc1227",
+    "codebase_community": "92101be6d2a9f6adceea59d38f6d1c556087f9eea1432432a21268cb1348036d",
+    "debit_card_specializing": "b3d149ad05746dbbe5116e229e17e18f09c39db43cf117d9ef3441753608b691",
+    "european_football_2": "f72f5c9b990371417288a67b27a02e601ef904d45525c2c9f7931fb01001c536",
+    "financial": "d15d89cdb068a202b6f2b99342af44dffc1d52545b39ceaf62efdc0ba570101e",
+    "formula_1": "79770caf966707e35516fa566e24b40ae515c74ec1ec4631235245645b87b24d",
+    "student_club": "eb89bcfe97eefa386a27904ec5aa15159811a7eac894ec659a36e48fa9f76b77",
+    "superhero": "75e94a2c3236ee3bb2c01fb97a1c4b4c1c269bcefd4eab1d04be323d2d0825b1",
+    "thrombosis_prediction": "87583183c3dc472fba04de702965560a9d7c0a548836613f242317e0eeb83f00",
+    "toxicology": "35ef27ae6bdfda530e125ed369666ac0abb8bc8c0bcc0ad09407f547ecb61a93"
+  },
+  "schemas": {
+    "california_schools": {
+      "ddl": "CREATE TABLE frpm\n(\n    CDSCode                                       TEXT not null\n        primary key,\n    `Academic Year`                               TEXT  null,\n    `County Code`                                 TEXT  null,\n    `District Code`                               INTEGER         null,\n    `School Code`                                 TEXT  null,\n    `County Name`                                 TEXT null,\n    `District Name`                               TEXT null,\n    `School Name`                                 TEXT null,\n    `District Type`                               TEXT null,\n    `School Type`                                 TEXT null,\n    `Educational Option Type`                     TEXT null,\n    `NSLP Provision Status`                       TEXT null,\n    `Charter School (Y/N)`                        INTEGER    null,\n    `Charter School Number`                       TEXT  null,\n    `Charter Funding Type`                        TEXT null,\n    IRC                                           INTEGER    null,\n    `Low Grade`                                   TEXT  null,\n    `High Grade`                                  TEXT null,\n    `Enrollment (K-12)`                           REAL      null,\n    `Free Meal Count (K-12)`                      REAL       null,\n    `Percent (%) Eligible Free (K-12)`            REAL       null,\n    `FRPM Count (K-12)`                           REAL       null,\n    `Percent (%) Eligible FRPM (K-12)`            REAL       null,\n    `Enrollment (Ages 5-17)`                      REAL       null,\n    `Free Meal Count (Ages 5-17)`                 REAL       null,\n    `Percent (%) Eligible Free (Ages 5-17)`       REAL       null,\n    `FRPM Count (Ages 5-17)`                      REAL       null,\n    `Percent (%) Eligible FRPM (Ages 5-17)`       REAL       null,\n    `2013-14 CALPADS Fall 1 Certification Status` INTEGER    null,\n    foreign key (CDSCode) references schools (CDSCode)\n)\nCREATE TABLE satscores\n(\n    cds         TEXT not null\n        primary key,\n    rtype       TEXT  not null,\n    sname       TEXT null,\n    dname       TEXT null,\n    cname       TEXT null,\n    enroll12    INTEGER         not null,\n    NumTstTakr  INTEGER          not null,\n    AvgScrRead  INTEGER          null,\n    AvgScrMath  INTEGER          null,\n    AvgScrWrite INTEGER          null,\n    NumGE1500   INTEGER          null,\n--     PctGE1500   double      null,\n        foreign key (cds) references schools (CDSCode)\n)\nCREATE TABLE schools\n(\n    CDSCode     TEXT not null\n        primary key,\n    NCESDist    TEXT  null,\n    NCESSchool  TEXT  null,\n    StatusType  TEXT  not null,\n    County      TEXT not null,\n    District    TEXT not null,\n    School      TEXT null,\n    Street      TEXT null,\n    StreetAbr   TEXT null,\n    City        TEXT null,\n    Zip         TEXT null,\n    State       TEXT  null,\n    MailStreet  TEXT null,\n    MailStrAbr  TEXT null,\n    MailCity    TEXT null,\n    MailZip     TEXT null,\n    MailState   TEXT  null,\n    Phone       TEXT null,\n    Ext         TEXT  null,\n    Website     TEXT null,\n    OpenDate    DATE        null,\n    ClosedDate  DATE        null,\n    Charter     INTEGER    null,\n    CharterNum  TEXT  null,\n    FundingType TEXT null,\n    DOC         TEXT  not null,\n    DOCType     TEXT not null,\n    SOC         TEXT  null,\n    SOCType     TEXT null,\n    EdOpsCode   TEXT  null,\n    EdOpsName   TEXT null,\n    EILCode     TEXT  null,\n    EILName     TEXT null,\n    GSoffered   TEXT null,\n    GSserved    TEXT  null,\n    Virtual     TEXT  null,\n    Magnet      INTEGER   null,\n    Latitude    REAL      null,\n    Longitude   REAL      null,\n    AdmFName1   TEXT null,\n    AdmLName1   TEXT null,\n    AdmEmail1   TEXT null,\n    AdmFName2   TEXT null,\n    AdmLName2   TEXT null,\n    AdmEmail2   TEXT null,\n    AdmFName3   TEXT  null,\n    AdmLName3   TEXT null,\n    AdmEmail3   TEXT null,\n    LastUpdate  DATE        not null\n)",
+      "sha256": "0d1dc8e477fdd6d8045033176db78127c34098e9ca195444cbfba6043e83e673"
+    },
+    "card_games": {
+      "ddl": "CREATE TABLE \"cards\"\n(\n    id                      INTEGER           not null\n        primary key autoincrement,\n    artist                  TEXT,\n    asciiName               TEXT,\n    availability            TEXT,\n    borderColor             TEXT,\n    cardKingdomFoilId       TEXT,\n    cardKingdomId           TEXT,\n    colorIdentity           TEXT,\n    colorIndicator          TEXT,\n    colors                  TEXT,\n    convertedManaCost       REAL,\n    duelDeck                TEXT,\n    edhrecRank              INTEGER,\n    faceConvertedManaCost   REAL,\n    faceName                TEXT,\n    flavorName              TEXT,\n    flavorText              TEXT,\n    frameEffects            TEXT,\n    frameVersion            TEXT,\n    hand                    TEXT,\n    hasAlternativeDeckLimit INTEGER default 0 not null,\n    hasContentWarning       INTEGER default 0 not null,\n    hasFoil                 INTEGER default 0 not null,\n    hasNonFoil              INTEGER default 0 not null,\n    isAlternative           INTEGER default 0 not null,\n    isFullArt               INTEGER default 0 not null,\n    isOnlineOnly            INTEGER default 0 not null,\n    isOversized             INTEGER default 0 not null,\n    isPromo                 INTEGER default 0 not null,\n    isReprint               INTEGER default 0 not null,\n    isReserved              INTEGER default 0 not null,\n    isStarter               INTEGER default 0 not null,\n    isStorySpotlight        INTEGER default 0 not null,\n    isTextless              INTEGER default 0 not null,\n    isTimeshifted           INTEGER default 0 not null,\n    keywords                TEXT,\n    layout                  TEXT,\n    leadershipSkills        TEXT,\n    life                    TEXT,\n    loyalty                 TEXT,\n    manaCost                TEXT,\n    mcmId                   TEXT,\n    mcmMetaId               TEXT,\n    mtgArenaId              TEXT,\n    mtgjsonV4Id             TEXT,\n    mtgoFoilId              TEXT,\n    mtgoId                  TEXT,\n    multiverseId            TEXT,\n    name                    TEXT,\n    number                  TEXT,\n    originalReleaseDate     TEXT,\n    originalText            TEXT,\n    originalType            TEXT,\n    otherFaceIds            TEXT,\n    power                   TEXT,\n    printings               TEXT,\n    promoTypes              TEXT,\n    purchaseUrls            TEXT,\n    rarity                  TEXT,\n    scryfallId              TEXT,\n    scryfallIllustrationId  TEXT,\n    scryfallOracleId        TEXT,\n    setCode                 TEXT,\n    side                    TEXT,\n    subtypes                TEXT,\n    supertypes              TEXT,\n    tcgplayerProductId      TEXT,\n    text                    TEXT,\n    toughness               TEXT,\n    type                    TEXT,\n    types                   TEXT,\n    uuid                    TEXT              not null\n        unique,\n    variations              TEXT,\n    watermark               TEXT\n)\nCREATE TABLE \"foreign_data\"\n(\n    id           INTEGER not null\n        primary key autoincrement,\n    flavorText   TEXT,\n    language     TEXT,\n    multiverseid INTEGER,\n    name         TEXT,\n    text         TEXT,\n    type         TEXT,\n    uuid         TEXT\n        references cards (uuid)\n)\nCREATE TABLE \"legalities\"\n(\n    id     INTEGER not null\n        primary key autoincrement,\n    format TEXT,\n    status TEXT,\n    uuid   TEXT\n        references cards (uuid)\n            on update cascade on delete cascade\n)\nCREATE TABLE \"rulings\"\n(\n    id   INTEGER not null\n        primary key autoincrement,\n    date DATE,\n    text TEXT,\n    uuid TEXT\n        references cards (uuid)\n            on update cascade on delete cascade\n)\nCREATE TABLE \"set_translations\"\n(\n    id          INTEGER not null\n        primary key autoincrement,\n    language    TEXT,\n    setCode     TEXT\n        references sets (code)\n            on update cascade on delete cascade,\n    translation TEXT\n)\nCREATE TABLE \"sets\"\n(\n    id               INTEGER           not null\n        primary key autoincrement,\n    baseSetSize      INTEGER,\n    block            TEXT,\n    booster          TEXT,\n    code             TEXT              not null\n        unique,\n    isFoilOnly       INTEGER default 0 not null,\n    isForeignOnly    INTEGER default 0 not null,\n    isNonFoilOnly    INTEGER default 0 not null,\n    isOnlineOnly     INTEGER default 0 not null,\n    isPartialPreview INTEGER default 0 not null,\n    keyruneCode      TEXT,\n    mcmId            INTEGER,\n    mcmIdExtras      INTEGER,\n    mcmName          TEXT,\n    mtgoCode         TEXT,\n    name             TEXT,\n    parentCode       TEXT,\n    releaseDate      DATE,\n    tcgplayerGroupId INTEGER,\n    totalSetSize     INTEGER,\n    type             TEXT\n)",
+      "sha256": "fbb1a1a5b4fdeaf559a73a2a969732fb37ea6fe9d6f414931de118a2d4427634"
+    },
+    "codebase_community": {
+      "ddl": "CREATE TABLE badges\n(\n    Id     INTEGER          not null\n        primary key,\n    UserId INTEGER          null,\n    Name   TEXT null,\n    Date   DATETIME     null,\n        foreign key (UserId) references users (Id)\n            on update cascade on delete cascade\n)\nCREATE TABLE comments\n(\n    Id              INTEGER          not null\n        primary key,\n    PostId          INTEGER          null,\n    Score           INTEGER          null,\n    Text            TEXT     null,\n    CreationDate    DATETIME     null,\n    UserId          INTEGER          null,\n    UserDisplayName TEXT null,\n        foreign key (PostId) references posts (Id)\n            on update cascade on delete cascade,\n        foreign key (UserId) references users (Id)\n            on update cascade on delete cascade\n)\nCREATE TABLE postHistory\n(\n    Id                INTEGER          not null UNIQUE\n        primary key,\n    PostHistoryTypeId INTEGER          null,\n    PostId            INTEGER          null,\n    RevisionGUID      TEXT null,\n    CreationDate      DATETIME     null,\n    UserId            INTEGER          null,\n    Text              TEXT     null,\n    Comment           TEXT         null,\n    UserDisplayName   TEXT null,\n        foreign key (PostId) references posts (Id)\n            on update cascade on delete cascade,\n        foreign key (UserId) references users (Id)\n            on update cascade on delete cascade\n)\nCREATE TABLE postLinks\n(\n    Id            INTEGER      not null\n        primary key,\n    CreationDate  DATETIME null,\n    PostId        INTEGER      null,\n    RelatedPostId INTEGER      null,\n    LinkTypeId    INTEGER      null,\n        foreign key (PostId) references posts (Id)\n            on update cascade on delete cascade,\n        foreign key (RelatedPostId) references posts (Id)\n            on update cascade on delete cascade\n)\nCREATE TABLE posts\n(\n    Id                    INTEGER          not null UNIQUE\n        primary key,\n    PostTypeId            INTEGER          null,\n    AcceptedAnswerId      INTEGER          null,\n    CreaionDate           DATETIME     null,\n    Score                 INTEGER          null,\n    ViewCount             INTEGER          null,\n    Body                  TEXT     null,\n    OwnerUserId           INTEGER          null,\n    LasActivityDate       DATETIME     null,\n    Title                 TEXT null,\n    Tags                  TEXT null,\n    AnswerCount           INTEGER          null,\n    CommentCount          INTEGER          null,\n    FavoriteCount         INTEGER          null,\n    LastEditorUserId      INTEGER          null,\n    LastEditDate          DATETIME     null,\n    CommunityOwnedDate    DATETIME    null,\n    ParentId              INTEGER          null,\n    ClosedDate            DATETIME     null,\n    OwnerDisplayName      TEXT null,\n    LastEditorDisplayName TEXT null,\n        foreign key (LastEditorUserId) references users (Id)\n            on update cascade on delete cascade,\n        foreign key (OwnerUserId) references users (Id)\n            on update cascade on delete cascade,\n        foreign key (ParentId) references posts (Id)\n            on update cascade on delete cascade\n)\nCREATE TABLE tags\n(\n    Id            INTEGER          not null\n        primary key,\n    TagName       TEXT null,\n    Count         INTEGER          null,\n    ExcerptPostId INTEGER          null,\n    WikiPostId    INTEGER          null,\n    foreign key (ExcerptPostId) references posts (Id)\n        on update cascade on delete cascade\n)\nCREATE TABLE users\n(\n    Id              INTEGER          not null UNIQUE\n        primary key,\n    Reputation      INTEGER          null,\n    CreationDate    DATETIME     null,\n    DisplayName     TEXT null,\n    LastAccessDate  DATETIME     null,\n    WebsiteUrl      TEXT null,\n    Location        TEXT null,\n    AboutMe         TEXT     null,\n    Views           INTEGER          null,\n    UpVotes         INTEGER          null,\n    DownVotes       INTEGER          null,\n    AccountId       INTEGER          null,\n    Age             INTEGER          null,\n    ProfileImageUrl TEXT null\n)\nCREATE TABLE votes\n(\n    Id           INTEGER  not null\n        primary key,\n    PostId       INTEGER  null,\n    VoteTypeId   INTEGER  null,\n    CreationDate DATE null,\n    UserId       INTEGER  null,\n    BountyAmount INTEGER  null,\n        foreign key (PostId) references posts (Id)\n            on update cascade on delete cascade,\n        foreign key (UserId) references users (Id)\n            on update cascade on delete cascade\n)",
+      "sha256": "f9cc3a331388663256297f8615da35ad1b47752f6578736abf7a4a0febe76752"
+    },
+    "debit_card_specializing": {
+      "ddl": "CREATE TABLE customers\n(\n    CustomerID INTEGER UNIQUE     not null\n        primary key,\n    Segment    TEXT null,\n    Currency   TEXT null\n)\nCREATE TABLE gasstations\n(\n    GasStationID INTEGER    UNIQUE   not null\n        primary key,\n    ChainID      INTEGER          null,\n    Country      TEXT null,\n    Segment      TEXT null\n)\nCREATE TABLE products\n(\n    ProductID   INTEGER   UNIQUE      not null\n        primary key,\n    Description TEXT null\n)\nCREATE TABLE \"transactions_1k\"\n(\n    TransactionID INTEGER\n        primary key autoincrement,\n    Date          DATE,\n    Time          TEXT,\n    CustomerID    INTEGER,\n    CardID        INTEGER,\n    GasStationID  INTEGER,\n    ProductID     INTEGER,\n    Amount        INTEGER,\n    Price         REAL\n)\nCREATE TABLE \"yearmonth\"\n(\n    CustomerID  INTEGER not null\n        references customers\n            on update cascade on delete cascade\n        references customers,\n    Date        TEXT    not null,\n    Consumption REAL,\n    primary key (Date, CustomerID)\n)",
+      "sha256": "37a08481d824e9388ec8bb0d23738a7dd23ccba1edfb774ebf5c48b554eae3bd"
+    },
+    "financial": {
+      "ddl": "CREATE TABLE account\n(\n    account_id  INTEGER default 0 not null\n        primary key,\n    district_id INTEGER default 0 not null,\n    frequency   TEXT   not null,\n    date        DATE          not null,\n    foreign key (district_id) references district (district_id)\n)\nCREATE TABLE card\n(\n    card_id INTEGER default 0 not null\n        primary key,\n    disp_id INTEGER           not null,\n    type    TEXT    not null,\n    issued  DATE          not null,\n    foreign key (disp_id) references disp (disp_id)\n)\nCREATE TABLE client\n(\n    client_id   INTEGER        not null\n        primary key,\n    gender      TEXT not null,\n    birth_date  DATE       not null,\n    district_id INTEGER        not null,\n    foreign key (district_id) references district (district_id)\n)\nCREATE TABLE disp\n(\n    disp_id    INTEGER        not null\n        primary key,\n    client_id  INTEGER        not null,\n    account_id INTEGER        not null,\n    type      TEXT not null,\n    foreign key (account_id) references account (account_id),\n    foreign key (client_id) references client (client_id)\n)\nCREATE TABLE district\n(\n    district_id INTEGER default 0 not null\n        primary key,\n    A2          TEXT   not null,\n    A3          TEXT   not null,\n    A4          TEXT       not null,\n    A5          TEXT           not null,\n    A6          TEXT           not null,\n    A7          TEXT           not null,\n    A8          INTEGER        not null,\n    A9          INTEGER           not null,\n    A10         REAL not null,\n    A11         INTEGER           not null,\n    A12         REAL null,\n    A13         REAL not null,\n    A14         INTEGER           not null,\n    A15         INTEGER        null,\n    A16         INTEGER          not null\n)\nCREATE TABLE loan\n(\n    loan_id    INTEGER default 0 not null\n        primary key,\n    account_id INTEGER           not null,\n    date       DATE          not null,\n    amount     INTEGER           not null,\n    duration   INTEGER           not null,\n    payments   REAL not null,\n    status     TEXT    not null,\n    foreign key (account_id) references account (account_id)\n)\nCREATE TABLE `order`\n(\n    order_id   INTEGER default 0 not null\n        primary key,\n    account_id INTEGER           not null,\n    bank_to    TEXT    not null,\n    account_to INTEGER           not null,\n    amount     REAL not null,\n    k_symbol   TEXT    not null,\n    foreign key (account_id) references account (account_id)\n)\nCREATE TABLE trans\n(\n    trans_id   INTEGER default 0    not null\n        primary key,\n    account_id INTEGER default 0    not null,\n    date       DATE             not null,\n    type       TEXT       not null,\n    operation  TEXT      null,\n    amount     INTEGER              not null,\n    balance    INTEGER             not null,\n    k_symbol   TEXT      null,\n    bank       TEXT       null,\n    account    INTEGER          null,\n    foreign key (account_id) references account (account_id)\n)",
+      "sha256": "e8fd111adc4ac751f11ae393c3967d56fc56a79de6e3598a6aded8639e3a3d25"
+    },
+    "formula_1": {
+      "ddl": "CREATE TABLE circuits\n(\n    circuitId  INTEGER\n        primary key autoincrement,\n    circuitRef TEXT default '' not null,\n    name       TEXT default '' not null,\n    location   TEXT,\n    country    TEXT,\n    lat        REAL,\n    lng        REAL,\n    alt        INTEGER,\n    url        TEXT default '' not null\n        unique\n)\nCREATE TABLE constructorResults\n(\n    constructorResultsId INTEGER\n        primary key autoincrement,\n    raceId               INTEGER default 0 not null,\n    constructorId        INTEGER default 0 not null,\n    points               REAL,\n    status               TEXT,\n    foreign key (raceId) references races(raceId),\n    foreign key (constructorId) references constructors(constructorId)\n\n)\nCREATE TABLE constructorStandings\n(\n    constructorStandingsId INTEGER\n        primary key autoincrement,\n    raceId                 INTEGER default 0 not null,\n    constructorId          INTEGER default 0 not null,\n    points                 REAL   default 0 not null,\n    position               INTEGER,\n    positionText           TEXT,\n    wins                   INTEGER default 0 not null,\n    foreign key (raceId) references races(raceId),\n    foreign key (constructorId) references constructors(constructorId)\n)\nCREATE TABLE constructors\n(\n    constructorId  INTEGER\n        primary key autoincrement,\n    constructorRef TEXT default '' not null,\n    name           TEXT default '' not null\n        unique,\n    nationality    TEXT,\n    url            TEXT default '' not null\n)\nCREATE TABLE driverStandings\n(\n    driverStandingsId INTEGER\n        primary key autoincrement,\n    raceId            INTEGER default 0 not null,\n    driverId          INTEGER default 0 not null,\n    points            REAL   default 0 not null,\n    position          INTEGER,\n    positionText      TEXT,\n    wins              INTEGER default 0 not null,\n    foreign key (raceId) references races(raceId),\n    foreign key (driverId) references drivers(driverId)\n)\nCREATE TABLE drivers\n(\n    driverId    INTEGER\n        primary key autoincrement,\n    driverRef   TEXT default '' not null,\n    number      INTEGER,\n    code        TEXT,\n    forename    TEXT default '' not null,\n    surname     TEXT default '' not null,\n    dob         DATE,\n    nationality TEXT,\n    url         TEXT default '' not null\n        unique\n)\nCREATE TABLE lapTimes\n(\n    raceId       INTEGER not null,\n    driverId     INTEGER not null,\n    lap          INTEGER not null,\n    position     INTEGER,\n    time         TEXT,\n    milliseconds INTEGER,\n    primary key (raceId, driverId, lap),\n    foreign key (raceId) references races(raceId),\n    foreign key (driverId) references drivers(driverId)\n)\nCREATE TABLE pitStops\n(\n    raceId       INTEGER not null,\n    driverId     INTEGER not null,\n    stop         INTEGER not null,\n    lap          INTEGER not null,\n    time         TEXT    not null,\n    duration     TEXT,\n    milliseconds INTEGER,\n    primary key (raceId, driverId, stop),\n    foreign key (raceId) references races(raceId),\n    foreign key (driverId) references drivers(driverId)\n)\nCREATE TABLE qualifying\n(\n    qualifyId     INTEGER\n        primary key autoincrement,\n    raceId        INTEGER default 0 not null,\n    driverId      INTEGER default 0 not null,\n    constructorId INTEGER default 0 not null,\n    number        INTEGER default 0 not null,\n    position      INTEGER,\n    q1            TEXT,\n    q2            TEXT,\n    q3            TEXT,\n    foreign key (raceId) references races(raceId),\n    foreign key (driverId) references drivers(driverId),\n    foreign key (constructorId) references constructors(constructorId)\n)\nCREATE TABLE races\n(\n    raceId    INTEGER\n        primary key autoincrement,\n    year      INTEGER default 0            not null,\n    round     INTEGER default 0            not null,\n    circuitId INTEGER default 0            not null,\n    name      TEXT    default ''           not null,\n    date      DATE    default '0000-00-00' not null,\n    time      TEXT,\n    url       TEXT unique,\n    foreign key (year) references seasons(year),\n    foreign key (circuitId) references circuits(circuitId)\n)\nCREATE TABLE results\n(\n    resultId        INTEGER\n        primary key autoincrement,\n    raceId          INTEGER default 0  not null,\n    driverId        INTEGER default 0  not null,\n    constructorId   INTEGER default 0  not null,\n    number          INTEGER,\n    grid            INTEGER default 0  not null,\n    position        INTEGER,\n    positionText    TEXT    default '' not null,\n    positionOrder   INTEGER default 0  not null,\n    points          REAL   default 0  not null,\n    laps            INTEGER default 0  not null,\n    time            TEXT,\n    milliseconds    INTEGER,\n    fastestLap      INTEGER,\n    rank            INTEGER default 0,\n    fastestLapTime  TEXT,\n    fastestLapSpeed TEXT,\n    statusId        INTEGER default 0  not null,\n    foreign key (raceId) references races(raceId),\n    foreign key (driverId) references drivers(driverId),\n    foreign key (constructorId) references constructors(constructorId),\n    foreign key (statusId) references status(statusId)\n)\nCREATE TABLE seasons\n(\n    year INTEGER default 0  not null\n        primary key,\n    url  TEXT    default '' not null\n        unique\n)\nCREATE TABLE status\n(\n    statusId INTEGER\n        primary key autoincrement,\n    status   TEXT default '' not null\n)",
+      "sha256": "a50ede914aa309ef7c3ea411bb7ccd5a7880b454230a5a550507e66186a0ddb2"
+    },
+    "student_club": {
+      "ddl": "CREATE TABLE \"attendance\"\n(\n    link_to_event  TEXT,\n    link_to_member TEXT,\n    primary key (link_to_event, link_to_member),\n    foreign key (link_to_event) references event(event_id),\n    foreign key (link_to_member) references member(member_id)\n)\nCREATE TABLE \"budget\"\n(\n    budget_id     TEXT\n            primary key,\n    category      TEXT,\n    spent         REAL,\n    remaining     REAL,\n    amount        INTEGER,\n    event_status  TEXT,\n    link_to_event TEXT,\n    foreign key (link_to_event) references event(event_id)\n)\nCREATE TABLE event\n(\n    event_id   TEXT\n        constraint event_pk\n            primary key,\n    event_name TEXT,\n    event_date TEXT,\n    type       TEXT,\n    notes      TEXT,\n    location   TEXT,\n    status     TEXT\n)\nCREATE TABLE \"expense\"\n(\n    expense_id          TEXT\n            primary key,\n    expense_description TEXT,\n    expense_date        TEXT,\n    cost                REAL,\n    approved            TEXT,\n    link_to_member      TEXT,\n    link_to_budget      TEXT,\n    foreign key (link_to_budget) references budget(budget_id),\n    foreign key (link_to_member) references member(member_id)\n)\nCREATE TABLE \"income\"\n(\n    income_id      TEXT\n        constraint income_pk\n            primary key,\n    date_received  TEXT,\n    amount         INTEGER,\n    source         TEXT,\n    notes          TEXT,\n    link_to_member TEXT,\n    foreign key (link_to_member) references member(member_id)\n)\nCREATE TABLE major\n(\n    major_id   TEXT\n        constraint major_pk\n            primary key,\n    major_name TEXT,\n    department TEXT,\n    college    TEXT\n)\nCREATE TABLE \"member\"\n(\n    member_id     TEXT\n        constraint member_pk\n            primary key,\n    first_name    TEXT,\n    last_name     TEXT,\n    email         TEXT,\n    position      TEXT,\n    t_shirt_size  TEXT,\n    phone         TEXT,\n    zip           INTEGER,\n    link_to_major TEXT,\n    foreign key (link_to_major) references major(major_id),\n    foreign key (zip) references zip_code(zip_code)\n)\nCREATE TABLE zip_code\n(\n    zip_code    INTEGER\n        constraint zip_code_pk\n            primary key,\n    type        TEXT,\n    city        TEXT,\n    county      TEXT,\n    state       TEXT,\n    short_state TEXT\n)",
+      "sha256": "4b0b3691efd7dda7d3d8fe5d13f50889f31de664515a727161d0258883bd8f67"
+    },
+    "toxicology": {
+      "ddl": "CREATE TABLE `atom` (\n  `atom_id` TEXT NOT NULL,\n  `molecule_id` TEXT DEFAULT NULL,\n  `element` TEXT DEFAULT NULL,\n  PRIMARY KEY (`atom_id`),\n  FOREIGN KEY (`molecule_id`) REFERENCES `molecule` (`molecule_id`)\n)\nCREATE TABLE `bond` (\n  `bond_id` TEXT NOT NULL,\n  `molecule_id` TEXT DEFAULT NULL,\n  `bond_type` TEXT DEFAULT NULL,\n  PRIMARY KEY (`bond_id`),\n  FOREIGN KEY (`molecule_id`) REFERENCES `molecule` (`molecule_id`)\n)\nCREATE TABLE `connected` (\n  `atom_id` TEXT NOT NULL,\n  `atom_id2` TEXT NOT NULL,\n  `bond_id` TEXT DEFAULT NULL,\n  PRIMARY KEY (`atom_id`,`atom_id2`),\n  FOREIGN KEY (`atom_id`) REFERENCES `atom` (`atom_id`) ON DELETE CASCADE ON UPDATE CASCADE,\n  FOREIGN KEY (`atom_id2`) REFERENCES `atom` (`atom_id`) ON DELETE CASCADE ON UPDATE CASCADE,\n  FOREIGN KEY (`bond_id`) REFERENCES `bond` (`bond_id`) ON DELETE CASCADE ON UPDATE CASCADE\n)\nCREATE TABLE `molecule` (\n  `molecule_id` TEXT NOT NULL,\n  `label` TEXT DEFAULT NULL,\n  PRIMARY KEY (`molecule_id`)\n)",
+      "sha256": "9fb0d83cee59cebe79ae3c5e3a2314d5d9beacd47dc23ff9fd63bd75d24a9337"
+    }
+  },
+  "positive_cases": [
+    {
+      "case_id": "RD01",
+      "db_id": "california_schools",
+      "question": "How many rows are in the schools table? Return one count.",
+      "evidence": "Count all rows.",
+      "initial_sql": "SELECT COUNT(*) FROM schools WHERE (",
+      "expected_error_category": "syntax"
+    },
+    {
+      "case_id": "RD02",
+      "db_id": "card_games",
+      "question": "How many rows are in the cards table? Return one count.",
+      "evidence": "Count all rows.",
+      "initial_sql": "SELECT COUNT(*) FROM cards WHERE",
+      "expected_error_category": "syntax"
+    },
+    {
+      "case_id": "RD03",
+      "db_id": "codebase_community",
+      "question": "How many rows are in the posts table? Return one count.",
+      "evidence": "Count every row, including rows with NULL optional fields.",
+      "initial_sql": "SELECT COUNT(__diag_post_id__) FROM posts",
+      "expected_error_category": "missing_column"
+    },
+    {
+      "case_id": "RD04",
+      "db_id": "debit_card_specializing",
+      "question": "How many distinct CustomerID values are present in customers?",
+      "evidence": "Return one distinct-customer count.",
+      "initial_sql": "SELECT COUNT(DISTINCT CustmerID) FROM customers",
+      "expected_error_category": "missing_column"
+    },
+    {
+      "case_id": "RD05",
+      "db_id": "financial",
+      "question": "How many rows are in the account table? Return one count.",
+      "evidence": "The intended relation is the existing account table.",
+      "initial_sql": "SELECT COUNT(*) FROM acccount",
+      "expected_error_category": "missing_table"
+    },
+    {
+      "case_id": "RD06",
+      "db_id": "formula_1",
+      "question": "How many rows are in the races table? Return one count.",
+      "evidence": "The intended relation is the existing races table.",
+      "initial_sql": "SELECT COUNT(*) FROM racez",
+      "expected_error_category": "missing_table"
+    },
+    {
+      "case_id": "RD07",
+      "db_id": "student_club",
+      "question": "How many distinct members appear in both attendance and income?",
+      "evidence": "Join attendance.link_to_member to income.link_to_member; count distinct matching member IDs.",
+      "initial_sql": "SELECT COUNT(DISTINCT link_to_member) FROM attendance AS a JOIN income AS i ON a.link_to_member = i.link_to_member",
+      "expected_error_category": "ambiguous_column"
+    },
+    {
+      "case_id": "RD08",
+      "db_id": "toxicology",
+      "question": "How many distinct molecules have at least one atom?",
+      "evidence": "Join molecule.molecule_id to atom.molecule_id; return one distinct molecule count.",
+      "initial_sql": "SELECT COUNT(DISTINCT molecule_id) FROM molecule AS m JOIN atom AS a ON m.molecule_id = a.molecule_id",
+      "expected_error_category": "ambiguous_column"
+    }
+  ],
+  "negative_cases": [
+    {
+      "case_id": "RN01",
+      "db_id": "california_schools",
+      "kind": "dangerous_sql",
+      "initial_sql": "DROP TABLE schools",
+      "expected_error_category": "safety_rejected"
+    },
+    {
+      "case_id": "RN02",
+      "db_id": "california_schools",
+      "kind": "dangerous_extension",
+      "initial_sql": "SELECT load_extension('diagnostic_forbidden')",
+      "expected_error_category": "safety_rejected"
+    },
+    {
+      "case_id": "RN03",
+      "db_id": "california_schools",
+      "kind": "timeout",
+      "initial_sql": "WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x+1 FROM n) SELECT SUM(x) FROM n",
+      "timeout_seconds": 0.001,
+      "expected_error_category": "timeout"
+    },
+    {
+      "case_id": "RN04",
+      "db_id": "california_schools",
+      "kind": "permission_denied",
+      "initial_sql": "SELECT COUNT(*) FROM schools",
+      "expected_error_category": "safety_rejected"
+    }
+  ],
+  "semantic_assertions": {
+    "RD01": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(*) FROM schools",
+      "required_tables": [
+        "schools"
+      ],
+      "requires_count": true,
+      "requires_distinct": false,
+      "expected_columns": 1,
+      "expected_rows": 1
+    },
+    "RD02": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(*) FROM cards",
+      "required_tables": [
+        "cards"
+      ],
+      "requires_count": true,
+      "requires_distinct": false,
+      "expected_columns": 1,
+      "expected_rows": 1
+    },
+    "RD03": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(*) FROM posts",
+      "required_tables": [
+        "posts"
+      ],
+      "requires_count": true,
+      "requires_distinct": false,
+      "expected_columns": 1,
+      "expected_rows": 1
+    },
+    "RD04": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(DISTINCT CustomerID) FROM customers",
+      "required_tables": [
+        "customers"
+      ],
+      "requires_count": true,
+      "requires_distinct": true,
+      "expected_columns": 1,
+      "expected_rows": 1
+    },
+    "RD05": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(*) FROM account",
+      "required_tables": [
+        "account"
+      ],
+      "requires_count": true,
+      "requires_distinct": false,
+      "expected_columns": 1,
+      "expected_rows": 1
+    },
+    "RD06": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(*) FROM races",
+      "required_tables": [
+        "races"
+      ],
+      "requires_count": true,
+      "requires_distinct": false,
+      "expected_columns": 1,
+      "expected_rows": 1
+    },
+    "RD07": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(DISTINCT a.link_to_member) FROM attendance AS a JOIN income AS i ON a.link_to_member = i.link_to_member",
+      "required_tables": [
+        "attendance",
+        "income"
+      ],
+      "requires_count": true,
+      "requires_distinct": true,
+      "expected_columns": 1,
+      "expected_rows": 1
+    },
+    "RD08": {
+      "version": "single_count_with_required_tables_v1",
+      "reference_sql": "SELECT COUNT(DISTINCT m.molecule_id) FROM molecule AS m JOIN atom AS a ON m.molecule_id = a.molecule_id",
+      "required_tables": [
+        "molecule",
+        "atom"
+      ],
+      "requires_count": true,
+      "requires_distinct": true,
+      "expected_columns": 1,
+      "expected_rows": 1
+    }
+  },
+  "new_explicit_authorization_required": true,
+  "automatic_resume_allowed": false,
+  "official_ex": null,
+  "pricing": {
+    "verified": false,
+    "actual_cost": null
+  }
+}
