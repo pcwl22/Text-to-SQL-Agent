@@ -154,6 +154,8 @@ $env:BIRD_RUN_INTEGRATION='0'
 
 ## 查阅成果与原始证据
 
+新增实验可观测性与离线错误分析：新消融记录保存完整合法表列、实际筛选 Schema、回退原因、Prompt 版本和源码指纹，Baseline 增加节点指标。`scripts/analyze_errors.py` 可关联已有官方评分，分类生成/结果截断及待归因语义错误，无需模型或 SQL 执行；历史缺失的列投影保持 UNKNOWN。记录格式、零请求命令和人工归因接口见 [可观测性手册](docs/OBSERVABILITY.md)。本项补强不产生新的模型成绩。
+
 | 材料 | 内容 |
 | --- | --- |
 | [FINAL_TECHNICAL_REPORT.md](docs/FINAL_TECHNICAL_REPORT.md) | 架构、数据、安全、审计、官方评分、真实结果、成本和限制 |

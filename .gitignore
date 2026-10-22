@@ -107,5 +107,7 @@ output/playwright/
 /frontend/output/
 !/docs/FRONTEND_DESIGN.md
 !/docs/FRONTEND_STATUS.md
+!/docs/OBSERVABILITY.md
+!/docs/OBSERVABILITY_STATUS.md
 !/frontend/src/data/
 !/frontend/src/data/**

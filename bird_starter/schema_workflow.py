@@ -7,6 +7,7 @@ from langgraph.graph import StateGraph, START, END
 
 from .baseline import error_info
 from .model import ModelFailure, extract_sql, redact
+from .observability import observe_schema, model_call_metrics
 from .prompts import generation_prompt
 from .schema_linking import (SelectionError, read_schema, linking_prompt, validate_selection,
                              full_selection, render_selection, schema_metrics)
@@ -28,6 +29,7 @@ class SchemaState(GraphInput, total=False):
     chosen_schema: str
     schema_selection: dict
     schema_linking: dict
+    schema_observation: dict
     trace: list[dict]
     node_metrics: dict
     generated_sql: str
@@ -61,13 +63,7 @@ class SchemaState(GraphInput, total=False):
 
 
 def _stats(model, started):
-    delegate = getattr(model, "delegate", model)
-    meta = getattr(delegate, "last_call", {})
-    return {"model_calls": meta.get("model_calls", 1),
-            "latency_ms": round(meta.get("model_latency_ms", (time.monotonic() - started) * 1000), 3),
-            "prompt_tokens": meta.get("prompt_tokens"), "completion_tokens": meta.get("completion_tokens"),
-            "usage_reported_calls": meta.get("usage_reported_calls", 0),
-            "request_attempt_ids": list(meta.get("request_attempt_ids", []))}
+    return model_call_metrics(model, started, time.monotonic())
 
 
 def _entry(node, started, **summary):
@@ -149,6 +145,8 @@ def build_schema_graph(model, *, schema_linking=True, sql_timeout=8.0, max_rows=
                        latency_ms=stats["latency_ms"], prompt_tokens=stats["prompt_tokens"],
                        completion_tokens=stats["completion_tokens"], usage_reported_calls=stats["usage_reported_calls"])
         return {"chosen_schema": chosen, "schema_selection": selected, "schema_linking": metrics,
+                "schema_observation": observe_schema(chosen, selected,
+                    full_schema_sha256=metrics["full_schema_sha256"], fallback_reason=reason),
                 "schema_tables": list(selected["tables"]),
                 "node_metrics": {**state["node_metrics"], "schema_linking": stats}, **error,
                 "trace": state["trace"] + [_entry("schema_linking", started, model_calls=stats["model_calls"],
@@ -301,10 +299,10 @@ def build_schema_graph(model, *, schema_linking=True, sql_timeout=8.0, max_rows=
 
 
 def schema_graph_record(output):
-    """Persist summaries and validated names, never the original prompt/snapshot."""
+    """Persist validated schema evidence, never complete prompts or snapshots."""
     fields = ("generated_sql", "generation_success", "execution_ok", "execution_error_type", "execution_error_message",
               "execution_time_ms", "output_truncated", "attempts", "error_type", "error_message", "status", "dry_run",
-              "schema_tables", "schema_selection", "schema_linking", "node_metrics", "trace",
+              "schema_tables", "schema_selection", "schema_linking", "schema_observation", "node_metrics", "trace",
               "sql_repair_enabled", "original_sql", "current_sql", "repaired_sql", "repair_attempts",
               "repair_trigger", "repair_error_type", "repair_success", "repair_execution_recovered", "repair_status",
               "initial_execution_ok", "error_category", "execution_history", "generation_model_calls")
