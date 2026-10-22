@@ -11,6 +11,7 @@ from .observability import observe_schema, model_call_metrics
 from .prompts import generation_prompt
 from .schema_linking import (SelectionError, read_schema, linking_prompt, validate_selection,
                              full_selection, render_selection, schema_metrics)
+from .schema_routing import AdaptiveSchemaGate, route_schema
 from .tools import execute_select
 from .sql_repair import (ErrorCategory, REPAIRABLE, classify_error, failure_fields,
                          validate_candidate, repair_prompt)
@@ -30,6 +31,7 @@ class SchemaState(GraphInput, total=False):
     schema_selection: dict
     schema_linking: dict
     schema_observation: dict
+    schema_routing: dict
     trace: list[dict]
     node_metrics: dict
     generated_sql: str
@@ -71,7 +73,7 @@ def _entry(node, started, **summary):
 
 
 def build_schema_graph(model, *, schema_linking=True, sql_timeout=8.0, max_rows=1000,
-                       max_prompt_chars=200000, dry_run=False, sql_repair=False):
+                       max_prompt_chars=200000, dry_run=False, sql_repair=False, adaptive_linking=None):
     """Explicit input whitelist; no Gold/evaluator, SDK construction or retry policy."""
     if (type(schema_linking) is not bool or type(dry_run) is not bool or type(sql_repair) is not bool
             or type(max_prompt_chars) is not int or max_prompt_chars <= 0
@@ -80,6 +82,9 @@ def build_schema_graph(model, *, schema_linking=True, sql_timeout=8.0, max_rows=
         raise ValueError("Invalid schema graph configuration")
     if getattr(getattr(model, "delegate", model), "max_retries", 0) != 0:
         raise ValueError("Schema graph requires an adapter with application retries disabled")
+    gate = AdaptiveSchemaGate() if adaptive_linking is None else adaptive_linking
+    if not isinstance(gate, AdaptiveSchemaGate) or (gate.enabled and (not schema_linking or sql_repair)):
+        raise ValueError("Adaptive Gate is experimental and restricted to Schema-only without Repair")
 
     def inspect(state):
         started = time.monotonic()
@@ -91,7 +96,8 @@ def build_schema_graph(model, *, schema_linking=True, sql_timeout=8.0, max_rows=
                    "repair_attempts": 0, "repair_trigger": False, "repair_error_type": None,
                    "repair_success": None, "repair_execution_recovered": False, "repair_status": "not_attempted",
                    "initial_execution_ok": False, "error_category": None, "execution_history": [],
-                   "generation_model_calls": 0, "last_execution_time_ms": None}
+                   "generation_model_calls": 0, "last_execution_time_ms": None,
+                   "schema_routing": route_schema(None, gate, linking_enabled=schema_linking)}
         try:
             snapshot = read_schema(state["db_path"])
             initial.update(snapshot=snapshot, full_schema=snapshot["full_schema"],
@@ -109,10 +115,13 @@ def build_schema_graph(model, *, schema_linking=True, sql_timeout=8.0, max_rows=
     def link(state):
         started = time.monotonic()
         snapshot = state["snapshot"]
-        enabled = schema_linking and not dry_run
+        routing = route_schema(snapshot, gate, linking_enabled=schema_linking)
+        enabled = routing["routing_decision"] == "USE_LINKING" and not dry_run
         stats = {"model_calls": 0, "latency_ms": 0.0, "prompt_tokens": None,
                  "completion_tokens": None, "usage_reported_calls": 0, "request_attempt_ids": []}
         valid, fallback, reason = None, False, "disabled" if not schema_linking else "dry_run" if dry_run else None
+        if gate.enabled and routing["linking_skipped"]:
+            reason = "adaptive_gate_skip"
         selected = full_selection(snapshot)
         error = {}
         if enabled:
@@ -139,12 +148,15 @@ def build_schema_graph(model, *, schema_linking=True, sql_timeout=8.0, max_rows=
                 finally:
                     stats = _stats(model, called)
         chosen = render_selection(selected, snapshot)
+        routing.update(selected_schema_size=len(chosen.encode("utf-8")),
+                       actual_linking_attempts=stats["model_calls"], linking_attempt_ids=stats["request_attempt_ids"])
         metrics = dict(schema_metrics(state["full_schema"], chosen), enabled=schema_linking,
                        selection_attempted=stats["model_calls"] > 0, selection_valid=valid,
                        fallback=fallback, fallback_reason=reason, model_calls=stats["model_calls"],
                        latency_ms=stats["latency_ms"], prompt_tokens=stats["prompt_tokens"],
                        completion_tokens=stats["completion_tokens"], usage_reported_calls=stats["usage_reported_calls"])
         return {"chosen_schema": chosen, "schema_selection": selected, "schema_linking": metrics,
+                "schema_routing": routing,
                 "schema_observation": observe_schema(chosen, selected,
                     full_schema_sha256=metrics["full_schema_sha256"], fallback_reason=reason),
                 "schema_tables": list(selected["tables"]),
@@ -302,7 +314,7 @@ def schema_graph_record(output):
     """Persist validated schema evidence, never complete prompts or snapshots."""
     fields = ("generated_sql", "generation_success", "execution_ok", "execution_error_type", "execution_error_message",
               "execution_time_ms", "output_truncated", "attempts", "error_type", "error_message", "status", "dry_run",
-              "schema_tables", "schema_selection", "schema_linking", "schema_observation", "node_metrics", "trace",
+              "schema_tables", "schema_selection", "schema_linking", "schema_observation", "schema_routing", "node_metrics", "trace",
               "sql_repair_enabled", "original_sql", "current_sql", "repaired_sql", "repair_attempts",
               "repair_trigger", "repair_error_type", "repair_success", "repair_execution_recovered", "repair_status",
               "initial_execution_ok", "error_category", "execution_history", "generation_model_calls")

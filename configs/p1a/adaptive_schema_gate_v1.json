@@ -1,0 +1,14 @@
+{
+  "version": "adaptive-schema-gate-v1",
+  "enabled": true,
+  "max_full_schema_bytes": 1014,
+  "threshold_basis": {
+    "feature": "original_ddl_utf8_bytes",
+    "selection": "largest_adjacent_size_ratio_on_11_unique_database_schemas; lower_endpoint_inclusive",
+    "lower_endpoint_bytes": 1014,
+    "upper_endpoint_bytes": 2214,
+    "manifest_sha256": "7136f72aa9e0b78ccab8b29dfb077247a082e541604b4f8841fede2a63ba6dd8",
+    "uses_gold_or_accuracy": false,
+    "status": "EXPERIMENTAL_OFFLINE_ONLY; not an optimized accuracy threshold"
+  }
+}

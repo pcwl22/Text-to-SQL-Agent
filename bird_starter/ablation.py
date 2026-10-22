@@ -198,7 +198,7 @@ def run_suite(config_path, cases_path, db_root, out_dir, *, groups=("A", "B", "C
                 "observability_version": OBSERVABILITY_VERSION,
                 "source_sha256": {name: file_sha256(PROJECT_ROOT / "bird_starter" / name) for name in
                     ("ablation.py", "baseline.py", "schema_workflow.py", "schema_linking.py", "observability.py",
-                     "prompts.py", "sql_repair.py", "model.py", "tools.py")},
+                     "prompts.py", "sql_repair.py", "model.py", "tools.py", "schema_routing.py")},
                 "python_executable": sys.executable, "execution": execution, "api_authorized": execution == "live" and allow_api,
                 "groups": list(groups), "group_budgets": caps, "theoretical_group_caps": theoretical,
                 "max_model_calls": cap, "request_audit_version": AUDIT_VERSION, "attempt_log_file": "batch.attempts.jsonl",
@@ -294,6 +294,7 @@ def run_suite(config_path, cases_path, db_root, out_dir, *, groups=("A", "B", "C
                                     observation = {**observation, "selection": full_selection(snapshot)}
                                 row.update(initial_sql=result.get("original_sql", result["generated_sql"]),
                                     schema_observation=observation,
+                                    schema_routing=result.get("schema_routing"),
                                     final_sql=result["generated_sql"], generation_success=result["generation_success"],
                                     initial_execution_ok=result.get("initial_execution_ok", result["execution_ok"]),
                                     final_execution_ok=result["execution_ok"], status=result["status"],
