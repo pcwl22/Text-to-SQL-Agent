@@ -1,0 +1,44 @@
+{
+  "name": "bird-agent-observatory",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0",
+    "pinia": "^3.0.0",
+    "element-plus": "^2.11.0",
+    "@element-plus/icons-vue": "^2.3.0",
+    "echarts": "^6.0.0",
+    "vue-echarts": "^8.0.0",
+    "@vue-flow/core": "^1.45.0",
+    "monaco-editor": "^0.57.0",
+    "axios": "^1.12.0"
+  },
+  "overrides": { "dompurify": "^3.4.17" },
+  "devDependencies": {
+    "vite": "^7.1.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "typescript": "~5.9.0",
+    "vue-tsc": "^3.1.0",
+    "tailwindcss": "^4.1.0",
+    "@tailwindcss/vite": "^4.1.0",
+    "vitest": "^4.1.12",
+    "@vue/test-utils": "2.4.6",
+    "jsdom": "^26.1.0",
+    "eslint": "^10.0.0",
+    "@eslint/js": "^10.0.0",
+    "eslint-plugin-vue": "^10.5.0",
+    "typescript-eslint": "^8.44.0",
+    "globals": "^16.4.0",
+    "@types/node": "^24.0.0"
+  }
+}
