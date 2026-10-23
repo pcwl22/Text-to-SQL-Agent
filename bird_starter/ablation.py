@@ -17,6 +17,7 @@ from .baseline import error_info, run_baseline
 from .data import AgentInput, load_cases, find_db
 from .experiment_sets import file_sha256, select_manifest_cases
 from .model import Model, TrackedModel, redact, safe_base_url, RESPONSE_PARSER_VERSION
+from .observability import OBSERVABILITY_VERSION
 from .prompts import PROMPT_VERSION
 from .reporting import estimated_cost
 from .request_audit import RequestLog, AuditError, write_new_json, inspect_request_log, AUDIT_VERSION
@@ -194,6 +195,10 @@ def run_suite(config_path, cases_path, db_root, out_dir, *, groups=("A", "B", "C
     out_dir.mkdir(parents=True, exist_ok=False)
     run_id = uuid.uuid4().hex
     manifest = {"run_id": run_id, "suite_version": config["suite_version"], "created_at_utc": datetime.now(timezone.utc).isoformat(),
+                "observability_version": OBSERVABILITY_VERSION,
+                "source_sha256": {name: file_sha256(PROJECT_ROOT / "bird_starter" / name) for name in
+                    ("ablation.py", "baseline.py", "schema_workflow.py", "schema_linking.py", "observability.py",
+                     "prompts.py", "sql_repair.py", "model.py", "tools.py", "schema_routing.py")},
                 "python_executable": sys.executable, "execution": execution, "api_authorized": execution == "live" and allow_api,
                 "groups": list(groups), "group_budgets": caps, "theoretical_group_caps": theoretical,
                 "max_model_calls": cap, "request_audit_version": AUDIT_VERSION, "attempt_log_file": "batch.attempts.jsonl",
@@ -236,6 +241,9 @@ def run_suite(config_path, cases_path, db_root, out_dir, *, groups=("A", "B", "C
                 with (out_dir / f"{g}.jsonl").open("x", encoding="utf-8") as stream:
                     for index, case in enumerate(cases):
                         row = _record(g, run_id, case, common, config, execution)
+                        row.update(observability_version=OBSERVABILITY_VERSION, schema_observation=None,
+                                   prompt_versions={k: common[k] for k in
+                                       ("prompt_version", "schema_link_prompt_version", "repair_prompt_version")})
                         planned_fault = ("missing_table" if index % 3 == 1 else "syntax" if index % 3 == 2 else None)
                         row.update(mock_scenario=manifest["mock_scenario"], fault_injection=manifest["fault_injection"],
                                    mock_fault_case=planned_fault if manifest["fault_injection"] else None,
@@ -279,7 +287,14 @@ def run_suite(config_path, cases_path, db_root, out_dir, *, groups=("A", "B", "C
                                 selection = result.get("schema_selection", full_selection(snapshot))
                                 schema = result.get("schema_linking", {**schema_metrics(snapshot["full_schema"], snapshot["full_schema"]),
                                           "selection_attempted": False, "selection_valid": None, "fallback": False})
+                                observation = result.get("schema_observation")
+                                if mode == "baseline" and observation is not None:
+                                    # Baseline uses the original catalog DDL. Add its full column
+                                    # selection from the pinned generation-only metadata snapshot.
+                                    observation = {**observation, "selection": full_selection(snapshot)}
                                 row.update(initial_sql=result.get("original_sql", result["generated_sql"]),
+                                    schema_observation=observation,
+                                    schema_routing=result.get("schema_routing"),
                                     final_sql=result["generated_sql"], generation_success=result["generation_success"],
                                     initial_execution_ok=result.get("initial_execution_ok", result["execution_ok"]),
                                     final_execution_ok=result["execution_ok"], status=result["status"],

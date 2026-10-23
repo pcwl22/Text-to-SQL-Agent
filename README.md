@@ -154,6 +154,10 @@ $env:BIRD_RUN_INTEGRATION='0'
 
 ## 查阅成果与原始证据
 
+新增实验可观测性与离线错误分析：新消融记录保存完整合法表列、实际筛选 Schema、回退原因、Prompt 版本和源码指纹，Baseline 增加节点指标。`scripts/analyze_errors.py` 可关联已有官方评分，分类生成/结果截断及待归因语义错误，无需模型或 SQL 执行；历史缺失的列投影保持 UNKNOWN。记录格式、零请求命令和人工归因接口见 [可观测性手册](docs/OBSERVABILITY.md)。本项补强不产生新的模型成绩。
+
+P1A 新增默认关闭的实验性 Adaptive Schema Gate：显式启用后，仅在 Schema-only 中依据完整 Schema 的 UTF-8 字节数决定是否跳过 Linking。`scripts/analyze_schema_cost.py` 提供固定 33 题的零模型请求预检与成本估算；它没有 live 选项，不能据此给 Adaptive 填写官方 EX、实际延迟或费用。阈值依据、使用方法及验收见 [P1A 离线成本优化](docs/SCHEMA_COST_OPTIMIZATION_STATUS.md)。
+
 | 材料 | 内容 |
 | --- | --- |
 | [FINAL_TECHNICAL_REPORT.md](docs/FINAL_TECHNICAL_REPORT.md) | 架构、数据、安全、审计、官方评分、真实结果、成本和限制 |
