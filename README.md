@@ -158,6 +158,8 @@ $env:BIRD_RUN_INTEGRATION='0'
 
 P1A 新增默认关闭的实验性 Adaptive Schema Gate：显式启用后，仅在 Schema-only 中依据完整 Schema 的 UTF-8 字节数决定是否跳过 Linking。`scripts/analyze_schema_cost.py` 提供固定 33 题的零模型请求预检与成本估算；它没有 live 选项，不能据此给 Adaptive 填写官方 EX、实际延迟或费用。阈值依据、使用方法及验收见 [P1A 离线成本优化](docs/SCHEMA_COST_OPTIMIZATION_STATUS.md)。
 
+P1B 提供独立的 `scripts/run_adaptive_live_validation.py`：预冻结排除开发集的新 10 题，按 Schema 大小分层，两种策略交错运行，默认离线 Dry Run。真实调用另需一次性授权和冻结指纹；原有限额模式保留计费校验，显式授权的 `UNLIMITED_RECORD_ONLY` 模式不以报价或金额为门槛，仍受全批次 40 次 HTTP 请求预约硬上限约束，不自动恢复。首次真实 B/E 配对验证已完成：两组官方 EX 均为 6/10，E 总 Tokens 减少 9.09%，费用 UNKNOWN；这只是 10 题分层样本的观测。原离线验收记录见 [P1B 离线准备](docs/ADAPTIVE_LIVE_VALIDATION_STATUS.md)，真实结果和限制见 [P1B 真实验证](docs/P1B_LIVE_VALIDATION_STATUS.md)。
+
 | 材料 | 内容 |
 | --- | --- |
 | [FINAL_TECHNICAL_REPORT.md](docs/FINAL_TECHNICAL_REPORT.md) | 架构、数据、安全、审计、官方评分、真实结果、成本和限制 |
