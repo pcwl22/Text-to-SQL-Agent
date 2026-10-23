@@ -17,7 +17,10 @@ import pytest
     "bird_starter.mcp_server",
     "run_eval",
 ])
-def test_module_import(module):
+def test_module_import(module, monkeypatch, tmp_path):
+    # FastMCP's settings loader reads .env relative to cwd independently of our
+    # config.PROJECT_ROOT fixture; imports must never inspect production dotenv.
+    monkeypatch.chdir(tmp_path)
     importlib.import_module(module)
 
 

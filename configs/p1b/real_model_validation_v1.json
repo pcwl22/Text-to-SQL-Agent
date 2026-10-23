@@ -1,0 +1,77 @@
+{
+  "version": "p1b-adaptive-live-v1",
+  "dataset_version": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301",
+  "dataset_sha256": "88ceb0710163cae46a256ecea8f0a8c98286599530b60587fda5c3cfe57d45d2",
+  "dataset_question_count": 500,
+  "case_count": 10,
+  "database_sha256": {
+    "california_schools": "c0903eec662e63068fd1d14403d3d6c1d473287fc10c4356333ea58f878db983",
+    "card_games": "c98bdb57fe7474da798b407785544b9af0daaad5d61fd21e2a73309493bc1227",
+    "codebase_community": "92101be6d2a9f6adceea59d38f6d1c556087f9eea1432432a21268cb1348036d",
+    "debit_card_specializing": "b3d149ad05746dbbe5116e229e17e18f09c39db43cf117d9ef3441753608b691",
+    "european_football_2": "f72f5c9b990371417288a67b27a02e601ef904d45525c2c9f7931fb01001c536",
+    "financial": "d15d89cdb068a202b6f2b99342af44dffc1d52545b39ceaf62efdc0ba570101e",
+    "formula_1": "79770caf966707e35516fa566e24b40ae515c74ec1ec4631235245645b87b24d",
+    "student_club": "eb89bcfe97eefa386a27904ec5aa15159811a7eac894ec659a36e48fa9f76b77",
+    "superhero": "75e94a2c3236ee3bb2c01fb97a1c4b4c1c269bcefd4eab1d04be323d2d0825b1",
+    "thrombosis_prediction": "87583183c3dc472fba04de702965560a9d7c0a548836613f242317e0eeb83f00",
+    "toxicology": "35ef27ae6bdfda530e125ed369666ac0abb8bc8c0bcc0ad09407f547ecb61a93"
+  },
+  "development_manifest": "configs/phase3a/bird_dev33_v1.json",
+  "development_manifest_sha256": "7136f72aa9e0b78ccab8b29dfb077247a082e541604b4f8841fede2a63ba6dd8",
+  "seed": 20261023,
+  "threshold_bytes": 1014,
+  "groups": {
+    "B": {
+      "adaptive": false,
+      "max_attempts": 20
+    },
+    "E": {
+      "adaptive": true,
+      "max_attempts": 20
+    }
+  },
+  "max_attempts": 40,
+  "common": {
+    "model": "deepseek-4.1-flash",
+    "base_url": "https://gw.lunaroute.com/v1",
+    "temperature": 0.0,
+    "request_timeout_seconds": 300.0,
+    "request_retries": 0,
+    "sdk_retries": 0,
+    "n": 1,
+    "max_output_tokens": 2048,
+    "token_parameter": "max_completion_tokens",
+    "concurrency": 1,
+    "evidence": true,
+    "prompt_version": "baseline-v1",
+    "sql_timeout_seconds": 8.0,
+    "max_rows": 1000,
+    "max_prompt_chars": 200000,
+    "http_redirects": false,
+    "max_repairs": 0,
+    "schema_link_prompt_version": "schema-link-v1",
+    "provider": "LunaRoute"
+  },
+  "pricing": {
+    "status": "UNVERIFIED",
+    "model": "deepseek-4.1-flash",
+    "provider": "LunaRoute",
+    "base_url": "https://gw.lunaroute.com/v1",
+    "billing_mode": "ACCOUNT_PLAN_NOT_VERIFIED",
+    "input_per_million": null,
+    "output_per_million": null,
+    "cached_input_per_million": null,
+    "currency": "USD",
+    "source_url": "https://docs.lunaroute.com/concepts/usage-and-billing/",
+    "verified_at": null,
+    "additional_charges": null,
+    "usage_supported": null,
+    "byte_token_bound_verified": false,
+    "chat_overhead_token_bound": null,
+    "bound_source_url": null,
+    "notice": "Public flat-rate inference docs do not verify this account or justify zero batch cost. Current catalog, account coverage, usage and invoice remain unverified."
+  },
+  "api_authorization": "Configuration alone does not authorize requests; explicit single-use user authorization is required. Unlimited cost is a separate policy from the <=40 combined HTTP reservation cap.",
+  "user_cost_preference": "UNLIMITED_RECORD_ONLY: no monetary limit, quote prerequisite, fee stop or billing prerequisite. Missing Usage is reported UNKNOWN, never estimated as measured."
+}

@@ -110,5 +110,7 @@ output/playwright/
 !/docs/OBSERVABILITY.md
 !/docs/OBSERVABILITY_STATUS.md
 !/docs/SCHEMA_COST_OPTIMIZATION_STATUS.md
+!/docs/ADAPTIVE_LIVE_VALIDATION_STATUS.md
+!/docs/P1B_LIVE_VALIDATION_STATUS.md
 !/frontend/src/data/
 !/frontend/src/data/**

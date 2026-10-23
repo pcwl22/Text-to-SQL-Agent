@@ -13,7 +13,7 @@ from bird_starter.official_ex_inputs import export_inputs
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", required=True)
-    parser.add_argument("--group", required=True, choices=list("ABCD"))
+    parser.add_argument("--group", required=True, choices=list("ABCDE"))
     parser.add_argument("--suite-config", default=str(PROJECT_ROOT / "configs/phase3c/ablation_v1.json"))
     parser.add_argument("--cases", default=str(PROJECT_ROOT / "data/mini_dev_data/mini_dev_sqlite.json"))
     parser.add_argument("--out-dir", required=True, help="Fresh directory inside ignored project outputs/")

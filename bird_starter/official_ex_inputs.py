@@ -78,6 +78,10 @@ def engine_readiness():
 
 
 def export_inputs(run_dir, group, suite_path, cases_path, out_dir):
+    batch_path = Path(run_dir) / "batch.config.json"
+    if json.loads(batch_path.read_text(encoding="utf-8-sig")).get("version") == "p1b-adaptive-live-v1":
+        from .adaptive_validation_evaluation import export_inputs as export_p1b
+        return export_p1b(run_dir, group, suite_path, cases_path, out_dir)
     context = read_group(run_dir, group, suite_path)
     config = context["config"]
     if context["batch"]["execution"] == "dry-run":
